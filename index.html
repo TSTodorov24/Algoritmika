@@ -644,6 +644,19 @@
     </main>
 
     <script>
+        // Save songs to localStorage
+function saveSongs() {
+  localStorage.setItem('choirSongs', JSON.stringify(songs));
+}
+
+// Load songs from localStorage
+function loadSongs() {
+  const savedSongs = localStorage.getItem('choirSongs');
+  if (savedSongs) {
+    songs = JSON.parse(savedSongs);
+  }
+}
+        
         // Sample database (in a real app, use localStorage or backend)
         let songs = [];
         let currentUser = null;
@@ -738,7 +751,52 @@
                 adminSongsContainer.appendChild(songItem);
             });
         }
+// Във функцията за добавяне/редактиране на песен (submit event)
+songForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  // ... същия код ...
+  
+  // Save to localStorage
+  saveSongs();
+  
+  // Reset form and show songs list
+  resetSongForm();
+  renderPublicSongs();
+  renderAdminSongs();
+  showPage('admin');
+});
 
+// Във функцията за изтриване на песен
+if (e.target.classList.contains('delete-song') || e.target.closest('.delete-song')) {
+  e.preventDefault();
+  const songId = parseInt(e.target.dataset.id || e.target.closest('.delete-song').dataset.id);
+  if (confirm('Сигурни ли сте, че искате да изтриете тази песен?')) {
+    songs = songs.filter(s => s.id !== songId);
+    saveSongs(); // Save after deletion
+    renderPublicSongs();
+    renderAdminSongs();
+  }
+}
+
+        function loadSongs() {
+  try {
+    const savedSongs = localStorage.getItem('choirSongs');
+    if (savedSongs) {
+      const parsed = JSON.parse(savedSongs);
+      if (Array.isArray(parsed)) {
+        songs = parsed;
+      }
+    }
+  } catch (e) {
+    console.error("Грешка при зареждане на песните:", e);
+  }
+}
+
+        // Автоматично запазване на всеки 30 секунди
+setInterval(saveSongs, 30000);
+
+        
         // Show song detail
         function showSongDetail(songId) {
             const song = songs.find(s => s.id === songId);
