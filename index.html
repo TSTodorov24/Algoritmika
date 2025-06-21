@@ -73,28 +73,6 @@
         }
 
         /* Navigation */
-        .nav-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 28px;
-            height: 21px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            z-index: 101;
-            padding: 0;
-        }
-
-        .nav-toggle span {
-            display: block;
-            height: 3px;
-            width: 100%;
-            background: white;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
         .user-nav {
             display: flex;
             gap: 1rem;
@@ -106,6 +84,13 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .user-nav a:hover {
+            background-color: rgba(255,255,255,0.1);
         }
 
         /* Main content */
@@ -143,95 +128,6 @@
             font-size: 1.5rem;
             font-weight: 600;
             color: var(--dark);
-        }
-
-        /* Cards */
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
-
-        .card-header {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .card-body {
-            padding: 1.25rem;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.625rem 1.25rem;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.875rem;
-            line-height: 1;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .btn i {
-            font-size: 1rem;
-        }
-
-        .btn-sm {
-            padding: 0.5rem 0.875rem;
-            font-size: 0.8125rem;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: rgba(67, 97, 238, 0.1);
         }
 
         /* Song list */
@@ -371,6 +267,113 @@
             margin-right: 0.5rem;
         }
 
+        /* Admin Dashboard */
+        .admin-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        /* Add/Edit Song Form */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            background: #f9fafb;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .btn i {
+            font-size: 1rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.875rem;
+            font-size: 0.8125rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
         /* Login page */
         .login-container {
             display: flex;
@@ -409,40 +412,6 @@
             color: var(--dark);
         }
 
-        /* Forms */
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-            background: #f9fafb;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: white;
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-
         /* Admin only elements */
         .admin-only {
             display: none;
@@ -458,10 +427,6 @@
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .nav-toggle {
-                display: flex;
-            }
-
             .song-detail-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -508,7 +473,7 @@
             </a>
 
             <div class="user-nav">
-                <a href="#" class="user-view" data-page="login">Вход</a>
+                <a href="#" class="user-view" id="loginBtn" data-page="login">Вход</a>
                 <a href="#" class="admin-only" id="logoutBtn">Изход</a>
                 <a href="#" class="admin-only" data-page="admin">Админ</a>
             </div>
@@ -551,14 +516,10 @@
                 </a>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Всички песни</h2>
-                </div>
-                <div class="card-body">
-                    <div class="song-list" id="admin-songs">
-                        <!-- Admin songs list will be loaded here -->
-                    </div>
+            <div class="admin-panel">
+                <h2>Всички песни</h2>
+                <div class="song-list" id="admin-songs">
+                    <!-- Admin songs list will be loaded here -->
                 </div>
             </div>
         </div>
@@ -572,51 +533,49 @@
                 </a>
             </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <form id="songForm">
-                        <input type="hidden" id="songId">
-                        
-                        <div class="form-group">
-                            <label for="songTitle" class="form-label">Заглавие</label>
-                            <input type="text" id="songTitle" class="form-control" required>
-                        </div>
+            <div class="admin-panel">
+                <form id="songForm">
+                    <input type="hidden" id="songId">
+                    
+                    <div class="form-group">
+                        <label for="songTitle" class="form-label">Заглавие</label>
+                        <input type="text" id="songTitle" class="form-control" required>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="songDescription" class="form-label">Описание</label>
-                            <textarea id="songDescription" class="form-control" rows="3"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="songDescription" class="form-label">Описание</label>
+                        <textarea id="songDescription" class="form-control" rows="3"></textarea>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="songImage" class="form-label">Линк към снимка</label>
-                            <input type="url" id="songImage" class="form-control">
-                        </div>
+                    <div class="form-group">
+                        <label for="songImage" class="form-label">Линк към снимка</label>
+                        <input type="url" id="songImage" class="form-control">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="songText" class="form-label">Текст на песента</label>
-                            <textarea id="songText" class="form-control" rows="6"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="songText" class="form-label">Текст на песента</label>
+                        <textarea id="songText" class="form-control" rows="6"></textarea>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Линкове</label>
-                            <div id="links-container">
-                                <!-- Links will be added here -->
-                            </div>
-                            <button type="button" id="addLinkBtn" class="btn btn-outline btn-sm mt-2">
-                                <i class="material-icons">add_link</i> Добави линк
-                            </button>
+                    <div class="form-group">
+                        <label class="form-label">Линкове</label>
+                        <div id="links-container">
+                            <!-- Links will be added here -->
                         </div>
+                        <button type="button" id="addLinkBtn" class="btn btn-outline btn-sm mt-2">
+                            <i class="material-icons">add_link</i> Добави линк
+                        </button>
+                    </div>
 
-                        <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="material-icons">save</i> Запази
-                            </button>
-                            <button type="button" id="cancelBtn" class="btn btn-outline">
-                                Отказ
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="material-icons">save</i> Запази
+                        </button>
+                        <button type="button" id="cancelBtn" class="btn btn-outline">
+                            Отказ
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -635,7 +594,7 @@
                             <input type="password" id="loginPassword" class="form-control" required>
                         </div>
                         <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="material-icons">login</i> Вход
                             </button>
                         </div>
@@ -650,6 +609,19 @@
         let songs = [];
         let currentUser = null;
         let editingSongId = null;
+
+        // DOM elements
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginForm = document.getElementById('loginForm');
+        const songForm = document.getElementById('songForm');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        const linksContainer = document.getElementById('links-container');
+        const publicSongsContainer = document.getElementById('public-songs');
+        const adminSongsContainer = document.getElementById('admin-songs');
+        const songDetailContainer = document.getElementById('song-detail-container');
+        const pages = document.querySelectorAll('.page');
 
         // Save songs to localStorage
         function saveSongs() {
@@ -681,6 +653,10 @@
             if (loggedIn) {
                 currentUser = JSON.parse(localStorage.getItem('choirAdminUser'));
                 document.body.classList.add('logged-in');
+                showPage('admin');
+            } else {
+                document.body.classList.remove('logged-in');
+                showPage('home');
             }
 
             // Load sample data if empty
@@ -875,13 +851,10 @@
         }
 
         // Event listeners
-        // Navigation links
-        document.querySelectorAll('[data-page]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const page = link.getAttribute('data-page');
-                showPage(page);
-            });
+        // Login button
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('login');
         });
 
         // Login form
@@ -910,6 +883,15 @@
             localStorage.removeItem('choirAdminUser');
             document.body.classList.remove('logged-in');
             showPage('home');
+        });
+
+        // Navigation links
+        document.querySelectorAll('[data-page]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.getAttribute('data-page');
+                showPage(page);
+            });
         });
 
         // Cancel song form
