@@ -67,9 +67,9 @@
         }
 
         .logo img {
-            height: 32px;
-            width: 32px;
-            border-radius: 8px;
+            height: 40px;
+            width: auto;
+            border-radius: 4px;
         }
 
         /* Navigation */
@@ -249,6 +249,7 @@
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .song-item:hover {
@@ -395,8 +396,9 @@
         }
 
         .login-logo img {
-            height: 60px;
+            height: 80px;
             margin-bottom: 1rem;
+            border-radius: 8px;
         }
 
         .login-title {
@@ -501,8 +503,8 @@
     <header>
         <div class="header-container">
             <a href="#" class="logo" data-page="home">
-                <img src="logo.jpg" alt="Лого">
-                <span>Хор Алгоритмика</span>
+                <img src="logo.jpg" alt="Лого на Хор Алгоритмика">
+                <span>Хор "Алгоритмика"</span>
             </a>
 
             <div class="user-nav">
@@ -623,8 +625,8 @@
             <div class="login-container">
                 <div class="login-card">
                     <div class="login-logo">
-                        <img src="logo.jpg" alt="Лого">
-                        <h2>Хор Алгоритмика</h2>
+                        <img src="logo.jpg" alt="Лого на Хор Алгоритмика">
+                        <h2>Хор "Алгоритмика"</h2>
                     </div>
                     <h3 class="login-title">Администраторски вход</h3>
                     <form id="loginForm">
@@ -644,38 +646,36 @@
     </main>
 
     <script>
-        // Save songs to localStorage
-function saveSongs() {
-  localStorage.setItem('choirSongs', JSON.stringify(songs));
-}
-
-// Load songs from localStorage
-function loadSongs() {
-  const savedSongs = localStorage.getItem('choirSongs');
-  if (savedSongs) {
-    songs = JSON.parse(savedSongs);
-  }
-}
-        
-        // Sample database (in a real app, use localStorage or backend)
+        // Database
         let songs = [];
         let currentUser = null;
         let editingSongId = null;
 
-        // DOM elements
-        const pages = document.querySelectorAll('.page');
-        const loginForm = document.getElementById('loginForm');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const songForm = document.getElementById('songForm');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const addLinkBtn = document.getElementById('addLinkBtn');
-        const linksContainer = document.getElementById('links-container');
-        const publicSongsContainer = document.getElementById('public-songs');
-        const adminSongsContainer = document.getElementById('admin-songs');
-        const songDetailContainer = document.getElementById('song-detail-container');
+        // Save songs to localStorage
+        function saveSongs() {
+            localStorage.setItem('choirSongs', JSON.stringify(songs));
+        }
+
+        // Load songs from localStorage
+        function loadSongs() {
+            try {
+                const savedSongs = localStorage.getItem('choirSongs');
+                if (savedSongs) {
+                    const parsed = JSON.parse(savedSongs);
+                    if (Array.isArray(parsed)) {
+                        songs = parsed;
+                    }
+                }
+            } catch (e) {
+                console.error("Грешка при зареждане на песните:", e);
+            }
+        }
 
         // Initialize the app
         function init() {
+            // Load songs from localStorage
+            loadSongs();
+            
             // Check if user is logged in
             const loggedIn = localStorage.getItem('choirAdminLoggedIn');
             if (loggedIn) {
@@ -683,12 +683,43 @@ function loadSongs() {
                 document.body.classList.add('logged-in');
             }
 
-            
+            // Load sample data if empty
+            if (songs.length === 0) {
+                songs = [
+                    {
+                        id: 1,
+                        title: "Българска рапсодия",
+                        description: "Класическо произведение на Панчо Владигеров",
+                        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                        text: "Текст на песента...",
+                        links: [
+                            {name: "YouTube", url: "https://youtube.com/watch?v=example1"},
+                            {name: "Spotify", url: "https://spotify.com/track/example1"}
+                        ],
+                        createdAt: new Date()
+                    },
+                    {
+                        id: 2,
+                        title: "Моята родина",
+                        description: "Патриотична песен",
+                        image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                        text: "Текст на песента...",
+                        links: [
+                            {name: "YouTube", url: "https://youtube.com/watch?v=example2"}
+                        ],
+                        createdAt: new Date()
+                    }
+                ];
+                saveSongs(); // Save the sample data
+            }
             
             renderPublicSongs();
             if (currentUser) {
                 renderAdminSongs();
             }
+
+            // Auto-save every 30 seconds
+            setInterval(saveSongs, 30000);
         }
 
         // Render public songs
@@ -751,52 +782,7 @@ function loadSongs() {
                 adminSongsContainer.appendChild(songItem);
             });
         }
-// Във функцията за добавяне/редактиране на песен (submit event)
-songForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  // ... същия код ...
-  
-  // Save to localStorage
-  saveSongs();
-  
-  // Reset form and show songs list
-  resetSongForm();
-  renderPublicSongs();
-  renderAdminSongs();
-  showPage('admin');
-});
 
-// Във функцията за изтриване на песен
-if (e.target.classList.contains('delete-song') || e.target.closest('.delete-song')) {
-  e.preventDefault();
-  const songId = parseInt(e.target.dataset.id || e.target.closest('.delete-song').dataset.id);
-  if (confirm('Сигурни ли сте, че искате да изтриете тази песен?')) {
-    songs = songs.filter(s => s.id !== songId);
-    saveSongs(); // Save after deletion
-    renderPublicSongs();
-    renderAdminSongs();
-  }
-}
-
-        function loadSongs() {
-  try {
-    const savedSongs = localStorage.getItem('choirSongs');
-    if (savedSongs) {
-      const parsed = JSON.parse(savedSongs);
-      if (Array.isArray(parsed)) {
-        songs = parsed;
-      }
-    }
-  } catch (e) {
-    console.error("Грешка при зареждане на песните:", e);
-  }
-}
-
-        // Автоматично запазване на всеки 30 секунди
-setInterval(saveSongs, 30000);
-
-        
         // Show song detail
         function showSongDetail(songId) {
             const song = songs.find(s => s.id === songId);
@@ -1006,6 +992,9 @@ setInterval(saveSongs, 30000);
                 songs.push(newSong);
             }
             
+            // Save to localStorage
+            saveSongs();
+            
             // Reset form and show songs list
             resetSongForm();
             renderPublicSongs();
@@ -1028,6 +1017,7 @@ setInterval(saveSongs, 30000);
                 const songId = parseInt(e.target.dataset.id || e.target.closest('.delete-song').dataset.id);
                 if (confirm('Сигурни ли сте, че искате да изтриете тази песен?')) {
                     songs = songs.filter(s => s.id !== songId);
+                    saveSongs(); // Save after deletion
                     renderPublicSongs();
                     renderAdminSongs();
                 }
