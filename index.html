@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хор "Алгоритмика"</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #560bad;
+            --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            --font-heading: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 32px;
+            width: 32px;
+            border-radius: 8px;
+        }
+
+        /* Navigation */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 28px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 101;
+            padding: 0;
+        }
+
+        .nav-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .user-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .user-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            padding: 1.5rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .btn i {
+            font-size: 1rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.875rem;
+            font-size: 0.8125rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        /* Song list */
+        .song-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+
+        .song-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .song-cover {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 1rem;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.5rem;
+        }
+
+        .song-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .song-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-description {
+            color: #666;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 1rem;
+        }
+
+        /* Song detail */
+        .song-detail {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .song-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .song-detail-cover {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-right: 1.5rem;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 2.5rem;
+        }
+
+        .song-detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .song-detail-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .song-detail-text {
+            white-space: pre-line;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .song-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .song-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .song-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .song-link i {
+            margin-right: 0.5rem;
+        }
+
+        /* Login page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 120px);
+            padding: 1rem;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            background: #f9fafb;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Admin only elements */
+        .admin-only {
+            display: none;
+        }
+
+        .logged-in .admin-only {
+            display: block;
+        }
+
+        .logged-in .user-view {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+
+            .song-detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .song-detail-cover {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .song-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .song-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .mt-3 { margin-top: 1rem; }
+        .mt-4 { margin-top: 1.5rem; }
+        .mb-3 { margin-bottom: 1rem; }
+        .mb-4 { margin-bottom: 1.5rem; }
+    </style>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo" data-page="home">
+                <img src="logo.jpg" alt="Лого">
+                <span>Хор Алгоритмика</span>
+            </a>
+
+            <div class="user-nav">
+                <a href="#" class="user-view" data-page="login">Вход</a>
+                <a href="#" class="admin-only" id="logoutBtn">Изход</a>
+                <a href="#" class="admin-only" data-page="admin">Админ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Page -->
+        <div class="page active" id="home-page">
+            <div class="page-header">
+                <h1 class="page-title">Нашите песни</h1>
+            </div>
+
+            <div class="song-list" id="public-songs">
+                <!-- Public songs will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Song Detail Page -->
+        <div class="page" id="song-detail-page">
+            <div class="page-header">
+                <h1 class="page-title">Детайли за песента</h1>
+                <a href="#" class="btn btn-outline" data-page="home">
+                    <i class="material-icons">arrow_back</i> Назад
+                </a>
+            </div>
+
+            <div class="song-detail" id="song-detail-container">
+                <!-- Song detail will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div class="page" id="admin-page">
+            <div class="page-header">
+                <h1 class="page-title">Администраторски панел</h1>
+                <a href="#" class="btn btn-primary" data-page="add-song">
+                    <i class="material-icons">add</i> Добави песен
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Всички песни</h2>
+                </div>
+                <div class="card-body">
+                    <div class="song-list" id="admin-songs">
+                        <!-- Admin songs list will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add/Edit Song Page -->
+        <div class="page" id="add-song-page">
+            <div class="page-header">
+                <h1 class="page-title" id="form-title">Добави нова песен</h1>
+                <a href="#" class="btn btn-outline" data-page="admin">
+                    <i class="material-icons">arrow_back</i> Назад
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <form id="songForm">
+                        <input type="hidden" id="songId">
+                        
+                        <div class="form-group">
+                            <label for="songTitle" class="form-label">Заглавие</label>
+                            <input type="text" id="songTitle" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="songDescription" class="form-label">Описание</label>
+                            <textarea id="songDescription" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="songImage" class="form-label">Линк към снимка</label>
+                            <input type="url" id="songImage" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="songText" class="form-label">Текст на песента</label>
+                            <textarea id="songText" class="form-control" rows="6"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Линкове</label>
+                            <div id="links-container">
+                                <!-- Links will be added here -->
+                            </div>
+                            <button type="button" id="addLinkBtn" class="btn btn-outline btn-sm mt-2">
+                                <i class="material-icons">add_link</i> Добави линк
+                            </button>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="material-icons">save</i> Запази
+                            </button>
+                            <button type="button" id="cancelBtn" class="btn btn-outline">
+                                Отказ
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div class="page" id="login-page">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-logo">
+                        <img src="logo.jpg" alt="Лого">
+                        <h2>Хор Алгоритмика</h2>
+                    </div>
+                    <h3 class="login-title">Администраторски вход</h3>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginPassword" class="form-label">Парола</label>
+                            <input type="password" id="loginPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="material-icons">login</i> Вход
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sample database (in a real app, use localStorage or backend)
+        let songs = [];
+        let currentUser = null;
+        let editingSongId = null;
+
+        // DOM elements
+        const pages = document.querySelectorAll('.page');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const songForm = document.getElementById('songForm');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        const linksContainer = document.getElementById('links-container');
+        const publicSongsContainer = document.getElementById('public-songs');
+        const adminSongsContainer = document.getElementById('admin-songs');
+        const songDetailContainer = document.getElementById('song-detail-container');
+
+        // Initialize the app
+        function init() {
+            // Check if user is logged in
+            const loggedIn = localStorage.getItem('choirAdminLoggedIn');
+            if (loggedIn) {
+                currentUser = JSON.parse(localStorage.getItem('choirAdminUser'));
+                document.body.classList.add('logged-in');
+            }
+
+            
+            
+            renderPublicSongs();
+            if (currentUser) {
+                renderAdminSongs();
+            }
+        }
+
+        // Render public songs
+        function renderPublicSongs() {
+            // Sort by creation date (newest first)
+            const sortedSongs = [...songs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            // Render songs
+            publicSongsContainer.innerHTML = '';
+            sortedSongs.forEach(song => {
+                const songItem = document.createElement('div');
+                songItem.className = 'song-item';
+                songItem.dataset.id = song.id;
+                songItem.addEventListener('click', () => showSongDetail(song.id));
+
+                songItem.innerHTML = `
+                    <div class="song-cover">
+                        ${song.image ? `<img src="${song.image}" alt="${song.title}">` : '<i class="material-icons">music_note</i>'}
+                    </div>
+                    <div class="song-info">
+                        <h3 class="song-title">${song.title}</h3>
+                        <p class="song-description">${song.description || 'Няма описание'}</p>
+                    </div>
+                `;
+                
+                publicSongsContainer.appendChild(songItem);
+            });
+        }
+
+        // Render admin songs list
+        function renderAdminSongs() {
+            // Sort by creation date (newest first)
+            const sortedSongs = [...songs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            // Render songs
+            adminSongsContainer.innerHTML = '';
+            sortedSongs.forEach(song => {
+                const songItem = document.createElement('div');
+                songItem.className = 'song-item';
+                songItem.dataset.id = song.id;
+
+                songItem.innerHTML = `
+                    <div class="song-cover">
+                        ${song.image ? `<img src="${song.image}" alt="${song.title}">` : '<i class="material-icons">music_note</i>'}
+                    </div>
+                    <div class="song-info">
+                        <h3 class="song-title">${song.title}</h3>
+                        <p class="song-description">${song.description || 'Няма описание'}</p>
+                    </div>
+                    <div class="song-actions">
+                        <button class="btn btn-primary btn-sm edit-song" data-id="${song.id}">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-song" data-id="${song.id}">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                `;
+                
+                adminSongsContainer.appendChild(songItem);
+            });
+        }
+
+        // Show song detail
+        function showSongDetail(songId) {
+            const song = songs.find(s => s.id === songId);
+            if (!song) return;
+
+            songDetailContainer.innerHTML = `
+                <div class="song-detail-header">
+                    <div class="song-detail-cover">
+                        ${song.image ? `<img src="${song.image}" alt="${song.title}">` : '<i class="material-icons">music_note</i>'}
+                    </div>
+                    <div>
+                        <h2 class="song-detail-title">${song.title}</h2>
+                        <p class="song-detail-description">${song.description || ''}</p>
+                    </div>
+                </div>
+                <div class="song-detail-text">${song.text || 'Няма добавен текст.'}</div>
+                ${song.links && song.links.length > 0 ? `
+                <h3>Линкове</h3>
+                <div class="song-links">
+                    ${song.links.map(link => `
+                        <a href="${link.url}" target="_blank" class="song-link">
+                            <i class="material-icons">link</i> ${link.name}
+                        </a>
+                    `).join('')}
+                </div>
+                ` : ''}
+            `;
+
+            showPage('song-detail');
+        }
+
+        // Add new link field
+        function addLinkField(link = {name: '', url: ''}) {
+            const linkId = Date.now();
+            const linkField = document.createElement('div');
+            linkField.className = 'form-group link-field';
+            linkField.dataset.id = linkId;
+            
+            linkField.innerHTML = `
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="text" class="form-control link-name" placeholder="Име (YouTube, Spotify и др.)" value="${link.name}">
+                    <input type="url" class="form-control link-url" placeholder="URL адрес" value="${link.url}">
+                    <button type="button" class="btn btn-danger btn-sm remove-link" style="padding: 0.5rem;">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+            `;
+            
+            linksContainer.appendChild(linkField);
+        }
+
+        // Reset song form
+        function resetSongForm() {
+            songForm.reset();
+            linksContainer.innerHTML = '';
+            editingSongId = null;
+            document.getElementById('form-title').textContent = 'Добави нова песен';
+        }
+
+        // Load song data into form
+        function loadSongForm(songId) {
+            const song = songs.find(s => s.id === songId);
+            if (!song) return;
+
+            editingSongId = songId;
+            document.getElementById('form-title').textContent = 'Редактирай песен';
+            document.getElementById('songId').value = song.id;
+            document.getElementById('songTitle').value = song.title;
+            document.getElementById('songDescription').value = song.description || '';
+            document.getElementById('songImage').value = song.image || '';
+            document.getElementById('songText').value = song.text || '';
+
+            // Load links
+            linksContainer.innerHTML = '';
+            if (song.links && song.links.length > 0) {
+                song.links.forEach(link => addLinkField(link));
+            } else {
+                addLinkField();
+            }
+        }
+
+        // Show specific page
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+                if (page.id === `${pageId}-page`) {
+                    page.classList.add('active');
+                }
+            });
+        }
+
+        // Event listeners
+        // Navigation links
+        document.querySelectorAll('[data-page]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.getAttribute('data-page');
+                showPage(page);
+            });
+        });
+
+        // Login form
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (password === '0102030405') {
+                currentUser = { name: 'Администратор', role: 'admin' };
+                localStorage.setItem('choirAdminLoggedIn', 'true');
+                localStorage.setItem('choirAdminUser', JSON.stringify(currentUser));
+                document.body.classList.add('logged-in');
+                renderAdminSongs();
+                showPage('admin');
+                loginForm.reset();
+            } else {
+                alert('Грешна парола! Моля, опитайте отново.');
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentUser = null;
+            localStorage.removeItem('choirAdminLoggedIn');
+            localStorage.removeItem('choirAdminUser');
+            document.body.classList.remove('logged-in');
+            showPage('home');
+        });
+
+        // Cancel song form
+        cancelBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetSongForm();
+            showPage('admin');
+        });
+
+        // Add link button
+        addLinkBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            addLinkField();
+        });
+
+        // Remove link button (delegated)
+        linksContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-link') || e.target.closest('.remove-link')) {
+                e.preventDefault();
+                const linkField = e.target.closest('.link-field');
+                if (linkField) {
+                    // Only remove if there are multiple links or it's empty
+                    const linkFields = document.querySelectorAll('.link-field');
+                    const nameInput = linkField.querySelector('.link-name');
+                    const urlInput = linkField.querySelector('.link-url');
+                    
+                    if (linkFields.length > 1 || (!nameInput.value && !urlInput.value)) {
+                        linkField.remove();
+                    }
+                }
+            }
+        });
+
+        // Song form submission
+        songForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Collect form data
+            const title = document.getElementById('songTitle').value.trim();
+            const description = document.getElementById('songDescription').value.trim();
+            const image = document.getElementById('songImage').value.trim();
+            const text = document.getElementById('songText').value.trim();
+            
+            // Collect links
+            const links = [];
+            document.querySelectorAll('.link-field').forEach(field => {
+                const name = field.querySelector('.link-name').value.trim();
+                const url = field.querySelector('.link-url').value.trim();
+                if (name && url) {
+                    links.push({ name, url });
+                }
+            });
+            
+            if (editingSongId) {
+                // Update existing song
+                const songIndex = songs.findIndex(s => s.id === editingSongId);
+                if (songIndex !== -1) {
+                    songs[songIndex] = {
+                        ...songs[songIndex],
+                        title,
+                        description,
+                        image,
+                        text,
+                        links,
+                        updatedAt: new Date()
+                    };
+                }
+            } else {
+                // Add new song
+                const newSong = {
+                    id: Date.now(),
+                    title,
+                    description,
+                    image,
+                    text,
+                    links,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                };
+                songs.push(newSong);
+            }
+            
+            // Reset form and show songs list
+            resetSongForm();
+            renderPublicSongs();
+            renderAdminSongs();
+            showPage('admin');
+        });
+
+        // Edit song button (delegated)
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('edit-song') || e.target.closest('.edit-song')) {
+                e.preventDefault();
+                const songId = parseInt(e.target.dataset.id || e.target.closest('.edit-song').dataset.id);
+                loadSongForm(songId);
+                showPage('add-song');
+            }
+            
+            // Delete song button
+            if (e.target.classList.contains('delete-song') || e.target.closest('.delete-song')) {
+                e.preventDefault();
+                const songId = parseInt(e.target.dataset.id || e.target.closest('.delete-song').dataset.id);
+                if (confirm('Сигурни ли сте, че искате да изтриете тази песен?')) {
+                    songs = songs.filter(s => s.id !== songId);
+                    renderPublicSongs();
+                    renderAdminSongs();
+                }
+            }
+        });
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
