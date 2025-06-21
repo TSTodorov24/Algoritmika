@@ -237,34 +237,41 @@
             white-space: pre-line;
             line-height: 1.8;
             margin-bottom: 2rem;
-        }
-
-        .song-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .song-link {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
             border-radius: 8px;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+            border-left: 4px solid var(--primary);
         }
 
-        .song-link:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
+        /* Text formatting styles */
+        .formatted-text {
+            white-space: pre-line;
+            font-family: var(--font-main);
+            line-height: 1.8;
         }
-
-        .song-link i {
-            margin-right: 0.5rem;
+        
+        .formatted-text p {
+            margin-bottom: 1rem;
+        }
+        
+        .formatted-text .verse {
+            margin-bottom: 1.5rem;
+        }
+        
+        .formatted-text .chorus {
+            font-weight: bold;
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .formatted-text .title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1.5rem;
         }
 
         /* Admin Dashboard */
@@ -308,6 +315,27 @@
         textarea.form-control {
             min-height: 120px;
             resize: vertical;
+        }
+
+        /* Text editor toolbar */
+        .editor-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .editor-toolbar button {
+            background: #f0f0f0;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .editor-toolbar button:hover {
+            background: #e0e0e0;
         }
 
         /* Buttons */
@@ -423,6 +451,16 @@
 
         .logged-in .user-view {
             display: none;
+        }
+
+        /* Preview area */
+        .preview-area {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            min-height: 100px;
         }
 
         /* Responsive adjustments */
@@ -554,7 +592,16 @@
 
                     <div class="form-group">
                         <label for="songText" class="form-label">Текст на песента</label>
-                        <textarea id="songText" class="form-control" rows="6"></textarea>
+                        <div class="editor-toolbar">
+                            <button type="button" data-command="formatVerse"><i class="material-icons">format_align_left</i> Куплет</button>
+                            <button type="button" data-command="formatChorus"><i class="material-icons">repeat</i> Припев</button>
+                            <button type="button" data-command="formatTitle"><i class="material-icons">title</i> Заглавие</button>
+                        </div>
+                        <textarea id="songText" class="form-control" rows="10"></textarea>
+                        <div class="preview-area" id="textPreview">
+                            <h4>Преглед на текста:</h4>
+                            <div id="previewContent"></div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -622,6 +669,9 @@
         const adminSongsContainer = document.getElementById('admin-songs');
         const songDetailContainer = document.getElementById('song-detail-container');
         const pages = document.querySelectorAll('.page');
+        const songText = document.getElementById('songText');
+        const previewContent = document.getElementById('previewContent');
+        const textPreview = document.getElementById('textPreview');
 
         // Save songs to localStorage
         function saveSongs() {
@@ -641,6 +691,27 @@
             } catch (e) {
                 console.error("Грешка при зареждане на песните:", e);
             }
+        }
+
+        // Format text with special tags
+        function formatText(text) {
+            // Replace formatting tags with HTML
+            let formatted = text
+                .replace(/\[title\](.*?)\[\/title\]/g, '<div class="title">$1</div>')
+                .replace(/\[verse\](.*?)\[\/verse\]/gs, '<div class="verse">$1</div>')
+                .replace(/\[chorus\](.*?)\[\/chorus\]/gs, '<div class="chorus">$1</div>');
+            
+            // Convert line breaks to <br> tags
+            formatted = formatted.replace(/\n/g, '<br>');
+            
+            return formatted;
+        }
+
+        // Update text preview
+        function updatePreview() {
+            const text = songText.value;
+            previewContent.innerHTML = formatText(text);
+            textPreview.style.display = text ? 'block' : 'none';
         }
 
         // Initialize the app
@@ -667,7 +738,7 @@
                         title: "Българска рапсодия",
                         description: "Класическо произведение на Панчо Владигеров",
                         image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                        text: "Текст на песента...",
+                        text: "[title]Българска рапсодия[/title]\n\n[verse]Текст на куплет 1...\nВтора част на куплет 1...[/verse]\n\n[chorus]Текст на припев...\nВтора част на припев...[/chorus]",
                         links: [
                             {name: "YouTube", url: "https://youtube.com/watch?v=example1"},
                             {name: "Spotify", url: "https://spotify.com/track/example1"}
@@ -679,7 +750,7 @@
                         title: "Моята родина",
                         description: "Патриотична песен",
                         image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                        text: "Текст на песента...",
+                        text: "[title]Моята родина[/title]\n\n[verse]Текст на куплет 1...\nВтора част на куплет 1...[/verse]\n\n[chorus]Текст на припев...\nВтора част на припев...[/chorus]",
                         links: [
                             {name: "YouTube", url: "https://youtube.com/watch?v=example2"}
                         ],
@@ -774,7 +845,7 @@
                         <p class="song-detail-description">${song.description || ''}</p>
                     </div>
                 </div>
-                <div class="song-detail-text">${song.text || 'Няма добавен текст.'}</div>
+                <div class="song-detail-text formatted-text">${formatText(song.text || 'Няма добавен текст.')}</div>
                 ${song.links && song.links.length > 0 ? `
                 <h3>Линкове</h3>
                 <div class="song-links">
@@ -816,6 +887,7 @@
             linksContainer.innerHTML = '';
             editingSongId = null;
             document.getElementById('form-title').textContent = 'Добави нова песен';
+            textPreview.style.display = 'none';
         }
 
         // Load song data into form
@@ -830,6 +902,7 @@
             document.getElementById('songDescription').value = song.description || '';
             document.getElementById('songImage').value = song.image || '';
             document.getElementById('songText').value = song.text || '';
+            updatePreview();
 
             // Load links
             linksContainer.innerHTML = '';
@@ -848,6 +921,27 @@
                     page.classList.add('active');
                 }
             });
+        }
+
+        // Formatting functions for text editor
+        function insertTextAtCursor(text) {
+            const textarea = songText;
+            const startPos = textarea.selectionStart;
+            const endPos = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(startPos, endPos);
+            
+            textarea.value = textarea.value.substring(0, startPos) + 
+                            text.replace('{selection}', selectedText) + 
+                            textarea.value.substring(endPos);
+            
+            // Set cursor position after inserted text
+            const newCursorPos = startPos + text.indexOf('{selection}') + selectedText.length;
+            textarea.selectionStart = newCursorPos;
+            textarea.selectionEnd = newCursorPos;
+            
+            // Focus back on textarea
+            textarea.focus();
+            updatePreview();
         }
 
         // Event listeners
@@ -924,6 +1018,29 @@
                 }
             }
         });
+
+        // Text editor buttons
+        document.querySelectorAll('[data-command]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const command = button.getAttribute('data-command');
+                
+                switch(command) {
+                    case 'formatVerse':
+                        insertTextAtCursor('[verse]{selection}[/verse]\n\n');
+                        break;
+                    case 'formatChorus':
+                        insertTextAtCursor('[chorus]{selection}[/chorus]\n\n');
+                        break;
+                    case 'formatTitle':
+                        insertTextAtCursor('[title]{selection}[/title]\n\n');
+                        break;
+                }
+            });
+        });
+
+        // Text area changes
+        songText.addEventListener('input', updatePreview);
 
         // Song form submission
         songForm.addEventListener('submit', (e) => {
