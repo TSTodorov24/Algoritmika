@@ -588,6 +588,12 @@
                     </div>
 
                     <div class="form-actions">
+                        <button type="button" id="exportBtn" class="btn btn-primary">
+                            <i class="material-icons">download</i> Експорт като HTML
+                        </button>
+                        <button type="button" id="importBtn" class="btn btn-outline">
+                            <i class="material-icons">upload</i> Импорт от HTML
+                        </button>
                         <button type="submit" class="btn btn-primary">
                             <i class="material-icons">save</i> Запази
                         </button>
@@ -623,6 +629,9 @@
         </div>
     </main>
 
+    <input type="file" id="htmlImport" accept=".html" style="display:none">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
         let songs = [];
         let currentUser = null;
@@ -645,6 +654,9 @@
         const formatVerseBtn = document.getElementById('formatVerseBtn');
         const formatChorusBtn = document.getElementById('formatChorusBtn');
         const formatTitleBtn = document.getElementById('formatTitleBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const htmlImport = document.getElementById('htmlImport');
 
         function saveSongs() {
             localStorage.setItem('choirSongs', JSON.stringify(songs));
@@ -697,6 +709,48 @@
             updatePreview();
         }
 
+        function exportToHTML() {
+            // Създаваме копие на текущия документ
+            const docClone = document.cloneNode(true);
+            
+            // Премахваме интерактивните елементи
+            const interactiveElements = docClone.querySelectorAll('#exportBtn, #importBtn, #loginBtn, #logoutBtn, .editor-toolbar, .form-actions');
+            interactiveElements.forEach(el => el.remove());
+            
+            // Добавяме текущите песни като JavaScript обект
+            const script = docClone.createElement('script');
+            script.textContent = `songs = ${JSON.stringify(songs)};`;
+            docClone.body.appendChild(script);
+            
+            // Генерираме HTML
+            const html = `<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хор "Алгоритмика"</title>
+    <style>${Array.from(document.querySelectorAll('style')).map(s => s.innerHTML).join('\n')}</style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    ${docClone.body.innerHTML}
+</body>
+</html>`;
+            
+            // Запазваме файла
+            const blob = new Blob([html], {type: "text/html;charset=utf-8"});
+            saveAs(blob, "hor_algorithmika.html");
+        }
+
+        function importFromHTML(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Това е опростен импорт - в реална ситуация ще трябва по-сложна обработка
+                alert("Импортът от HTML изисква допълнителна разработка. Моля, използвайте администраторския интерфейс за добавяне на песни.");
+            };
+            reader.readAsText(file);
+        }
+
         function init() {
             loadSongs();
             
@@ -743,8 +797,6 @@
             if (currentUser) {
                 renderAdminSongs();
             }
-
-            setInterval(saveSongs, 30000);
         }
 
         function renderPublicSongs() {
@@ -972,6 +1024,22 @@
         });
 
         songText.addEventListener('input', updatePreview);
+
+        exportBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            exportToHTML();
+        });
+
+        importBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            htmlImport.click();
+        });
+
+        htmlImport.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                importFromHTML(e.target.files[0]);
+            }
+        });
 
         songForm.addEventListener('submit', (e) => {
             e.preventDefault();
