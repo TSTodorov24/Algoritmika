@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Хор "Алгоритмика"</title>
+    <title>Хор "Алгоритмика" - Български народни песни</title>
     <style>
         :root {
             --primary: #4361ee;
@@ -11,1108 +11,497 @@
             --accent: #4895ef;
             --light: #f8f9fa;
             --dark: #212529;
-            --success: #4cc9f0;
-            --danger: #f72585;
-            --warning: #f8961e;
-            --info: #560bad;
-            --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            --font-heading: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: var(--font-main);
+            font-family: system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             color: var(--dark);
             background-color: #f5f7fa;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            padding: 20px;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.75rem 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
+        .header img {
+            height: 80px;
+            border-radius: 8px;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 600;
-            font-size: 1.25rem;
-            color: white;
-            text-decoration: none;
+        .header h1 {
+            margin-top: 10px;
+            color: var(--primary);
         }
 
-        .logo img {
-            height: 40px;
-            width: auto;
-            border-radius: 4px;
-        }
-
-        .user-nav {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .user-nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
-
-        .user-nav a:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        main {
-            flex: 1;
-            padding: 1.5rem 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .page {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .page.active {
+        /* Страница със списък с песни */
+        .songs-list-page {
             display: block;
         }
 
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .song-list {
+        .songs-list {
+            max-width: 1000px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
         }
 
-        .song-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
+        .song-card {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: all 0.2s;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
             cursor: pointer;
+            text-align: center;
         }
 
-        .song-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
         .song-cover {
-            width: 60px;
-            height: 60px;
+            width: 100px;
+            height: 100px;
             border-radius: 8px;
-            object-fit: cover;
-            margin-right: 1rem;
             background: #eee;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
-            font-size: 1.5rem;
-        }
-
-        .song-info {
-            flex: 1;
-            min-width: 0;
+            margin: 0 auto 15px;
+            color: #666;
+            font-size: 2rem;
         }
 
         .song-title {
+            font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 0.25rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            color: var(--primary);
         }
 
-        .song-description {
-            color: #666;
-            font-size: 0.875rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        /* Страница с детайли за песен */
+        .song-detail-page {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .song-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-left: 1rem;
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #f0f4ff;
         }
 
-        .song-detail {
+        .back-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .song-detail-container {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .song-detail-header {
             display: flex;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
         .song-detail-cover {
             width: 120px;
             height: 120px;
-            border-radius: 12px;
-            object-fit: cover;
-            margin-right: 1.5rem;
+            border-radius: 8px;
             background: #eee;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
-            font-size: 2.5rem;
+            margin-right: 20px;
+            color: #666;
+            font-size: 3rem;
         }
 
         .song-detail-title {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .song-detail-description {
-            color: #666;
-            margin-bottom: 1rem;
+            color: var(--primary);
         }
 
         .song-detail-text {
             white-space: pre-line;
             line-height: 1.8;
-            margin-bottom: 2rem;
-            font-family: var(--font-main);
-            font-size: 1rem;
-            padding: 1rem;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
         }
 
-        .formatted-text {
-            white-space: pre-line;
-            font-family: var(--font-main);
-            line-height: 1.8;
-        }
-        
-        .formatted-text p {
-            margin-bottom: 1rem;
-        }
-        
-        .formatted-text .verse {
+        .verse {
             margin-bottom: 1.5rem;
         }
-        
-        .formatted-text .chorus {
+
+        .chorus {
             font-weight: bold;
             margin: 1.5rem 0;
             padding-left: 1rem;
             border-left: 3px solid var(--accent);
         }
-        
-        .formatted-text .title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
 
-        .admin-panel {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-            background: #f9fafb;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: white;
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .editor-toolbar {
+        .song-links {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
             flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .editor-toolbar button {
-            background: #f0f0f0;
-            border: none;
-            padding: 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .editor-toolbar button:hover {
-            background: #e0e0e0;
-        }
-
-        .btn {
+        .song-links a {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 0.625rem 1.25rem;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.875rem;
-            line-height: 1;
+            color: var(--primary);
             text-decoration: none;
-            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #f0f4ff;
             transition: all 0.2s;
-            border: none;
-            gap: 0.5rem;
-            white-space: nowrap;
         }
 
-        .btn i {
-            font-size: 1rem;
-        }
-
-        .btn-sm {
-            padding: 0.5rem 0.875rem;
-            font-size: 0.8125rem;
-        }
-
-        .btn-primary {
+        .song-links a:hover {
             background: var(--primary);
             color: white;
         }
 
-        .btn-primary:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
+        .material-icons {
+            font-size: 1.2rem;
+            margin-right: 5px;
         }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: rgba(67, 97, 238, 0.1);
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: calc(100vh - 120px);
-            padding: 1rem;
-        }
-
-        .login-card {
-            width: 100%;
-            max-width: 400px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            overflow: hidden;
-            padding: 2rem;
-        }
-
-        .login-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-logo img {
-            height: 80px;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-        }
-
-        .login-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .admin-only {
-            display: none;
-        }
-
-        .logged-in .admin-only {
-            display: block;
-        }
-
-        .logged-in .user-view {
-            display: none;
-        }
-
-        .preview-area {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
-            min-height: 100px;
-        }
-
-        @media (max-width: 768px) {
-            .song-detail-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .song-detail-cover {
-                margin-right: 0;
-                margin-bottom: 1.5rem;
-            }
-        }
-
-        @media (min-width: 640px) {
-            .song-list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .song-list {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .mt-3 { margin-top: 1rem; }
-        .mt-4 { margin-top: 1.5rem; }
-        .mb-3 { margin-bottom: 1rem; }
-        .mb-4 { margin-bottom: 1.5rem; }
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo" data-page="home">
-                <img src="logo.jpg" alt="Лого на Хор Алгоритмика">
-                <span>Хор "Алгоритмика"</span>
-            </a>
+    <div class="header">
+        <img src="logo.jpg" alt="Лого на Хор Алгоритмика">
+        <h1>Хор "Алгоритмика"</h1>
+    </div>
 
-            <div class="user-nav">
-                <a href="#" class="user-view" id="loginBtn" data-page="login">Вход</a>
-                <a href="#" class="admin-only" id="logoutBtn">Изход</a>
-                <a href="#" class="admin-only" data-page="admin">Админ</a>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <div class="page active" id="home-page">
-            <div class="page-header">
-                <h1 class="page-title">Нашите песни</h1>
-            </div>
-
-            <div class="song-list" id="public-songs">
-            </div>
-        </div>
-
-        <div class="page" id="song-detail-page">
-            <div class="page-header">
-                <h1 class="page-title">Детайли за песента</h1>
-                <a href="#" class="btn btn-outline" data-page="home">
-                    <i class="material-icons">arrow_back</i> Назад
-                </a>
-            </div>
-
-            <div class="song-detail" id="song-detail-container">
-            </div>
-        </div>
-
-        <div class="page" id="admin-page">
-            <div class="page-header">
-                <h1 class="page-title">Администраторски панел</h1>
-                <a href="#" class="btn btn-primary" data-page="add-song">
-                    <i class="material-icons">add</i> Добави песен
-                </a>
-            </div>
-
-            <div class="admin-panel">
-                <h2>Всички песни</h2>
-                <div class="song-list" id="admin-songs">
+    <!-- Страница със списък с песни -->
+    <div class="songs-list-page" id="songsListPage">
+        <div class="songs-list">
+            <!-- Песен 1 -->
+            <div class="song-card" data-song-id="1">
+                <div class="song-cover">
+                    <i class="material-icons">music_note</i>
                 </div>
-            </div>
-        </div>
-
-        <div class="page" id="add-song-page">
-            <div class="page-header">
-                <h1 class="page-title" id="form-title">Добави нова песен</h1>
-                <a href="#" class="btn btn-outline" data-page="admin">
-                    <i class="material-icons">arrow_back</i> Назад
-                </a>
+                <h2 class="song-title">Катерино, моме</h2>
             </div>
 
-            <div class="admin-panel">
-                <form id="songForm">
-                    <input type="hidden" id="songId">
-                    
-                    <div class="form-group">
-                        <label for="songTitle" class="form-label">Заглавие</label>
-                        <input type="text" id="songTitle" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="songDescription" class="form-label">Описание</label>
-                        <textarea id="songDescription" class="form-control" rows="3"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="songImage" class="form-label">Линк към снимка</label>
-                        <input type="url" id="songImage" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="songText" class="form-label">Текст на песента</label>
-                        <div class="editor-toolbar">
-                            <button type="button" id="formatVerseBtn"><i class="material-icons">format_align_left</i> Куплет</button>
-                            <button type="button" id="formatChorusBtn"><i class="material-icons">repeat</i> Припев</button>
-                            <button type="button" id="formatTitleBtn"><i class="material-icons">title</i> Заглавие</button>
-                        </div>
-                        <textarea id="songText" class="form-control" rows="10"></textarea>
-                        <div class="preview-area" id="textPreview">
-                            <h4>Преглед на текста:</h4>
-                            <div id="previewContent"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Линкове</label>
-                        <div id="links-container">
-                        </div>
-                        <button type="button" id="addLinkBtn" class="btn btn-outline btn-sm mt-2">
-                            <i class="material-icons">add_link</i> Добави линк
-                        </button>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" id="exportBtn" class="btn btn-primary">
-                            <i class="material-icons">download</i> Експорт като HTML
-                        </button>
-                        <button type="button" id="importBtn" class="btn btn-outline">
-                            <i class="material-icons">upload</i> Импорт от HTML
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="material-icons">save</i> Запази
-                        </button>
-                        <button type="button" id="cancelBtn" class="btn btn-outline">
-                            Отказ
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="page" id="login-page">
-            <div class="login-container">
-                <div class="login-card">
-                    <div class="login-logo">
-                        <img src="logo.jpg" alt="Лого на Хор Алгоритмика">
-                        <h2>Хор "Алгоритмика"</h2>
-                    </div>
-                    <h3 class="login-title">Администраторски вход</h3>
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="loginPassword" class="form-label">Парола</label>
-                            <input type="password" id="loginPassword" class="form-control" required>
-                        </div>
-                        <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="material-icons">login</i> Вход
-                            </button>
-                        </div>
-                    </form>
+            <!-- Песен 2 -->
+            <div class="song-card" data-song-id="2">
+                <div class="song-cover">
+                    <i class="material-icons">music_note</i>
                 </div>
+                <h2 class="song-title">Ишу, бяла Недо</h2>
+            </div>
+
+            <!-- Песен 3 -->
+            <div class="song-card" data-song-id="3">
+                <div class="song-cover">
+                    <i class="material-icons">music_note</i>
+                </div>
+                <h2 class="song-title">Слънчице мило мамино</h2>
+            </div>
+
+            <!-- Песен 4 -->
+            <div class="song-card" data-song-id="4">
+                <div class="song-cover">
+                    <i class="material-icons">music_note</i>
+                </div>
+                <h2 class="song-title">Море пиле, славей пиле</h2>
+            </div>
+
+            <!-- Песен 5 -->
+            <div class="song-card" data-song-id="5">
+                <div class="song-cover">
+                    <i class="material-icons">music_note</i>
+                </div>
+                <h2 class="song-title">Ерген деда</h2>
+            </div>
+
+            <!-- Песен 6 -->
+            <div class="song-card" data-song-id="6">
+                <div class="song-cover">
+                    <i class="material-icons">music_note</i>
+                </div>
+                <h2 class="song-title">Бре, Петрунко</h2>
             </div>
         </div>
-    </main>
+    </div>
 
-    <input type="file" id="htmlImport" accept=".html" style="display:none">
+    <!-- Страница с детайли за песен -->
+    <div class="song-detail-page" id="songDetailPage">
+        <a href="#" class="back-button" id="backButton">
+            <i class="material-icons">arrow_back</i> Назад към всички песни
+        </a>
+        
+        <div class="song-detail-container" id="songDetailContainer">
+            <!-- Тук ще се зарежда съдържанието на песента -->
+        </div>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
-        let songs = [];
-        let currentUser = null;
-        let editingSongId = null;
+        // Данни за песните
+        const songsData = {
+            1: {
+                title: "Катерино, моме",
+                text: `Катерино, моме, севда голема
+Катерино, моме, севда голема
+Севда голема, мерак голема
+Севда голема, мерак голема
 
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const loginForm = document.getElementById('loginForm');
-        const songForm = document.getElementById('songForm');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const addLinkBtn = document.getElementById('addLinkBtn');
-        const linksContainer = document.getElementById('links-container');
-        const publicSongsContainer = document.getElementById('public-songs');
-        const adminSongsContainer = document.getElementById('admin-songs');
-        const songDetailContainer = document.getElementById('song-detail-container');
-        const pages = document.querySelectorAll('.page');
-        const songText = document.getElementById('songText');
-        const previewContent = document.getElementById('previewContent');
-        const textPreview = document.getElementById('textPreview');
-        const formatVerseBtn = document.getElementById('formatVerseBtn');
-        const formatChorusBtn = document.getElementById('formatChorusBtn');
-        const formatTitleBtn = document.getElementById('formatTitleBtn');
-        const exportBtn = document.getElementById('exportBtn');
-        const importBtn = document.getElementById('importBtn');
-        const htmlImport = document.getElementById('htmlImport');
+Море шо те майка все вечер кара
+Море шо те майка все вечер кара
+Все вечер кара, все по вечеря
+Все вечер кара, все по вечеря
 
-        function saveSongs() {
-            localStorage.setItem('choirSongs', JSON.stringify(songs));
-        }
+Де-гиди лудо, лудо, па, младо
+Де-гиди лудо, лудо, па, младо
+Мене ме майка все вечер кара
+Все вечер кара, все зарад тебе
+Мене ме майка все вечер кара
+Все вечер кара, все зарад тебе
 
-        function loadSongs() {
-            try {
-                const savedSongs = localStorage.getItem('choirSongs');
-                if (savedSongs) {
-                    const parsed = JSON.parse(savedSongs);
-                    if (Array.isArray(parsed)) {
-                        songs = parsed;
-                    }
-                }
-            } catch (e) {
-                console.error("Грешка при зареждане на песните:", e);
-            }
-        }
+Е, мирно не стоиш,
+Е, мирно не стоиш!
 
-        function formatText(text) {
-            let formatted = text
-                .replace(/\[title\](.*?)\[\/title\]/g, '<div class="title">$1</div>')
+На порти дойдеш, мирно не стоиш -
+Камъне хвърляш, пенджере трошиш
+Камъне хвърляш, пенджере трошиш
+Камъне хвърляш, пенджере трошиш
+Мене ме майка, лудо младо,
+Лудо младо, на теб не дава!`,
+                links: [
+                    { name: "Слушай в YouTube", url: "https://www.youtube.com/watch?v=WumhV4RwtlE", icon: "play_circle_filled" },
+                    { name: "Виж текста", url: "https://1drv.ms/w/c/EED06590C03E03B8/EdhndvCsz4xFj4x0W6jOlGABYErwa3x8YcL6Q0_eblEV1w?e=PVvynV", icon: "description" }
+                ]
+            },
+            2: {
+                title: "Ишу, бяла Недо",
+                
+                text: `Текста ще намерите на линка с име виж текста`,
+
+                links: [
+                    { name: "Слушай в YouTube", url: "https://www.youtube.com/watch?v=jqIBNITVDhM&feature=youtu.be", icon: "play_circle_filled" },
+                    { name: "Виж текста", url: "https://musescore.com/user/27536680/scores/5648082", icon: "description" }
+                ]
+            },
+            3: {
+                title: "Слънчице мило мамино",
+                text: ` Слънчице мило мамино, я изгрей слънце я изгрей
+сутринта рано в ниделя та да огрееш слънчице
+Бащини двори широки и трите бора високи.
+
+Болен ми Пейо лежеше Пейо ми млада гидия
+майка му вода носеше жално му мило думаше:
+Я стани синко да видиш, твоите верни другари.
+
+Твоите вяерни другари хорото водят и питат:
+Къде е Пейо да дойде хорото да си поведе?
+До лична мома хубава, хубава мома гиздава.`,
+                links: [
+                    { name: "Слушай в YouTube", url: "https://www.youtube.com/watch?v=28LuV2XGLf4&feature=youtu.be", icon: "play_circle_filled" },
+                    { name: "Виж текста", url: "https://1drv.ms/w/c/EED06590C03E03B8/ER7NKJrAMT5OhVPLAUqnsTIB8_pNQhEYUGp8I84JxeKzrQ?e=K9bAh2", icon: "description" }
+                ]
+            },
+            4: {
+                title: "Море пиле, славей пиле",
+                text: `Море пиле, славей пиле,
+я запей ми песничица,
+да се чуе надалеко,
+надалеко преко Вардар.
+
+Преко Вардар до Велешко,
+от Велешко во Прилепско.
+От Прилепско во Крушово,
+от Крушово зад кория.
+
+Там дето е славен юнак,
+славен юнак, Питу Гули.
+Ой ви вази, крушовчани,
+не бидете натажени!
+Не бидете натажени
+натажени, разплакани!`,
+                links: [
+                    { name: "Слушай в YouTube", url: "https://www.youtube.com/watch?list=PLHiHVrEeejyB2hCFFdx5i6Ibetza4BzOx&v=Nvq4CGMuHqw&feature=youtu.be", icon: "play_circle_filled" },
+                    { name: "Виж текста", url: "https://1drv.ms/w/c/EED06590C03E03B8/EcxJbApra49NktQLSRVHy_4BXNOqghwYLy1LFJwEMLo2tQ?e=RXaAmh", icon: "description" }
+                ]
+            },
+
+            5: {
+                title: "Ерген деда",
+                text: `[ Ерген деда, червен деда ей така,
+па така накривил е калпачето ей така, па така ] x2
+
+Ерген деда, червен деда ей така
+дум така, така, така, па така дум
+
+[ Накривил е калпачето ей така, па така
+нанагоре-нанадоле ей така, па така ] x2
+
+Нанагоре-нанадоле ей така, па така
+па отиде у селото ей така, па така
+
+[ Па отиде у селото ей така, па
+па се хвана на ′орото ей така, па ] x2
+
+Ерген деда, червен деда
+ей така дум така, така, така, па така дум
+
+Дум, дум, дум, дум
+ей така дум така, така, така, па така дум
+Дум, дум, дум, дум
+Ей дум така, така, така, па така дум
+
+[ Па се хвана на ′орото ей така, па така
+на 'орото до момите ей така, па така ] x2
+
+Ерген деда, червен деда
+Ей така дум така, така, така, па така дум
+
+[ На ′орото до момите ей така, па така
+свите моми побегали ей така, па така ] x2
+
+Свите моми побегали ей така, па така
+останала най-малата ей така, па така
+
+[ Останала най-малата ей така, па
+най-малата Ангелина ей така, па ] x2
+
+
+Ерген деда, червен деда
+ей така дум така, така, така, па така дум
+Дум, дум, дум, дум
+ей така дум така, така, така, па така дум
+Дум, дум, дум, дум
+ей дум така, така, така, па така (вик).`,
+                links: [
+                    { name: "Слушай в YouTube", url: "https://www.youtube.com/watch?v=Fdp5nFnWic8&feature=youtu.be", icon: "play_circle_filled" },
+                    { name: "Виж текста", url: "https://1drv.ms/w/c/EED06590C03E03B8/ERqSfsaDA6RJsujvQWylcS8BAcNHHCCx3xfsagqwiNEoxA?e=iHCnSo", icon: "description" }
+                ]
+            },
+
+            6: {
+                title: "Бре, Петрунко",
+                text: `Бре, Петрунко, мори, малай мо
+Бре, Петрунко, малай моме
+Все йодиме, мори, йобидо
+Все йодиме, йобидоме
+
+Нигде йоро, мори, не найдо
+Нигдей оро, не найдоме
+В ваше село, мори, дор три йо
+В ваше село, дор три йора
+
+Първо йоро, мори, Петрунки
+Първой оро, Петрункино
+Петрунчица, море, йоро во
+Петрунчица, йоро води
+
+Йоздол иде, мори, лудо-мла
+Йоздол иде, лудо-младо
+Не се фана, мори, на среда
+Не се фана на средата
+
+Най се фана, мори, на тане
+Най се фана на танецо
+На танецо, мори, до Петрун
+На танецо, до Петрунка
+
+С перчем коси, мори, китка ро
+С перчем коси, китка рони
+С нозе си их, мори, чехли ка
+С нозе си их чехли каля`,
+                links: [
+                    { name: "Слушай в YouTube", url: "https://www.youtube.com/watch?v=agavA10zew8&feature=youtu.be", icon: "play_circle_filled" },
+                    { name: "Виж текста", url: "https://1drv.ms/w/c/EED06590C03E03B8/Eea-a0xxtRFMi8ERqWK77q0BnmVPABtJS5Wy_mV5xdNhjQ?e=UpBweG", icon: "description" }
+                ]
+            },
+            
+
+        };
+
+        // Функция за форматиране на текста
+        function formatSongText(text) {
+            return text
                 .replace(/\[verse\](.*?)\[\/verse\]/gs, '<div class="verse">$1</div>')
-                .replace(/\[chorus\](.*?)\[\/chorus\]/gs, '<div class="chorus">$1</div>');
-            
-            formatted = formatted.replace(/\n/g, '<br>');
-            return formatted;
+                .replace(/\[chorus\](.*?)\[\/chorus\]/gs, '<div class="chorus">$1</div>')
+                .replace(/\n/g, '<br>');
         }
 
-        function updatePreview() {
-            const text = songText.value;
-            previewContent.innerHTML = formatText(text);
-            textPreview.style.display = text ? 'block' : 'none';
-        }
-
-        function wrapSelectedText(openingTag, closingTag) {
-            const startPos = songText.selectionStart;
-            const endPos = songText.selectionEnd;
-            const selectedText = songText.value.substring(startPos, endPos);
-            
-            songText.value = songText.value.substring(0, startPos) + 
-                            openingTag + selectedText + closingTag + 
-                            songText.value.substring(endPos);
-            
-            const newCursorPos = endPos + openingTag.length + closingTag.length;
-            songText.selectionStart = newCursorPos;
-            songText.selectionEnd = newCursorPos;
-            
-            songText.focus();
-            updatePreview();
-        }
-
-        function exportToHTML() {
-            // Създаваме копие на текущия документ
-            const docClone = document.cloneNode(true);
-            
-            // Премахваме интерактивните елементи
-            const interactiveElements = docClone.querySelectorAll('#exportBtn, #importBtn, #loginBtn, #logoutBtn, .editor-toolbar, .form-actions');
-            interactiveElements.forEach(el => el.remove());
-            
-            // Добавяме текущите песни като JavaScript обект
-            const script = docClone.createElement('script');
-            script.textContent = `songs = ${JSON.stringify(songs)};`;
-            docClone.body.appendChild(script);
-            
-            // Генерираме HTML
-            const html = `<!DOCTYPE html>
-<html lang="bg">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Хор "Алгоритмика"</title>
-    <style>${Array.from(document.querySelectorAll('style')).map(s => s.innerHTML).join('\n')}</style>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-<body>
-    ${docClone.body.innerHTML}
-</body>
-</html>`;
-            
-            // Запазваме файла
-            const blob = new Blob([html], {type: "text/html;charset=utf-8"});
-            saveAs(blob, "hor_algorithmika.html");
-        }
-
-        function importFromHTML(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Това е опростен импорт - в реална ситуация ще трябва по-сложна обработка
-                alert("Импортът от HTML изисква допълнителна разработка. Моля, използвайте администраторския интерфейс за добавяне на песни.");
-            };
-            reader.readAsText(file);
-        }
-
-        function init() {
-            loadSongs();
-            
-            const loggedIn = localStorage.getItem('choirAdminLoggedIn');
-            if (loggedIn) {
-                currentUser = JSON.parse(localStorage.getItem('choirAdminUser'));
-                document.body.classList.add('logged-in');
-                showPage('admin');
-            } else {
-                document.body.classList.remove('logged-in');
-                showPage('home');
-            }
-
-            if (songs.length === 0) {
-                songs = [
-                    {
-                        id: 1,
-                        title: "Българска рапсодия",
-                        description: "Класическо произведение на Панчо Владигеров",
-                        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                        text: "[title]Българска рапсодия[/title]\n\n[verse]Текст на куплет 1...\nВтора част на куплет 1...[/verse]\n\n[chorus]Текст на припев...\nВтора част на припев...[/chorus]",
-                        links: [
-                            {name: "YouTube", url: "https://youtube.com/watch?v=example1"},
-                            {name: "Spotify", url: "https://spotify.com/track/example1"}
-                        ],
-                        createdAt: new Date()
-                    },
-                    {
-                        id: 2,
-                        title: "Моята родина",
-                        description: "Патриотична песен",
-                        image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                        text: "[title]Моята родина[/title]\n\n[verse]Текст на куплет 1...\nВтора част на куплет 1...[/verse]\n\n[chorus]Текст на припев...\nВтора част на припев...[/chorus]",
-                        links: [
-                            {name: "YouTube", url: "https://youtube.com/watch?v=example2"}
-                        ],
-                        createdAt: new Date()
-                    }
-                ];
-                saveSongs();
-            }
-            
-            renderPublicSongs();
-            if (currentUser) {
-                renderAdminSongs();
-            }
-        }
-
-        function renderPublicSongs() {
-            const sortedSongs = [...songs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            
-            publicSongsContainer.innerHTML = '';
-            sortedSongs.forEach(song => {
-                const songItem = document.createElement('div');
-                songItem.className = 'song-item';
-                songItem.dataset.id = song.id;
-                songItem.addEventListener('click', () => showSongDetail(song.id));
-
-                songItem.innerHTML = `
-                    <div class="song-cover">
-                        ${song.image ? `<img src="${song.image}" alt="${song.title}">` : '<i class="material-icons">music_note</i>'}
-                    </div>
-                    <div class="song-info">
-                        <h3 class="song-title">${song.title}</h3>
-                        <p class="song-description">${song.description || 'Няма описание'}</p>
-                    </div>
-                `;
-                
-                publicSongsContainer.appendChild(songItem);
-            });
-        }
-
-        function renderAdminSongs() {
-            const sortedSongs = [...songs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            
-            adminSongsContainer.innerHTML = '';
-            sortedSongs.forEach(song => {
-                const songItem = document.createElement('div');
-                songItem.className = 'song-item';
-                songItem.dataset.id = song.id;
-
-                songItem.innerHTML = `
-                    <div class="song-cover">
-                        ${song.image ? `<img src="${song.image}" alt="${song.title}">` : '<i class="material-icons">music_note</i>'}
-                    </div>
-                    <div class="song-info">
-                        <h3 class="song-title">${song.title}</h3>
-                        <p class="song-description">${song.description || 'Няма описание'}</p>
-                    </div>
-                    <div class="song-actions">
-                        <button class="btn btn-primary btn-sm edit-song" data-id="${song.id}">
-                            <i class="material-icons">edit</i>
-                        </button>
-                        <button class="btn btn-danger btn-sm delete-song" data-id="${song.id}">
-                            <i class="material-icons">delete</i>
-                        </button>
-                    </div>
-                `;
-                
-                adminSongsContainer.appendChild(songItem);
-            });
-        }
-
+        // Функция за показване на детайли за песен
         function showSongDetail(songId) {
-            const song = songs.find(s => s.id === songId);
+            const song = songsData[songId];
             if (!song) return;
 
-            songDetailContainer.innerHTML = `
+            const container = document.getElementById('songDetailContainer');
+            container.innerHTML = `
                 <div class="song-detail-header">
                     <div class="song-detail-cover">
-                        ${song.image ? `<img src="${song.image}" alt="${song.title}">` : '<i class="material-icons">music_note</i>'}
+                        <i class="material-icons">music_note</i>
                     </div>
-                    <div>
-                        <h2 class="song-detail-title">${song.title}</h2>
-                        <p class="song-detail-description">${song.description || ''}</p>
-                    </div>
+                    <h2 class="song-detail-title">${song.title}</h2>
                 </div>
-                <div class="song-detail-text formatted-text">${formatText(song.text || 'Няма добавен текст.')}</div>
-                ${song.links && song.links.length > 0 ? `
-                <h3>Линкове</h3>
+                <div class="song-detail-text">${formatSongText(song.text)}</div>
                 <div class="song-links">
                     ${song.links.map(link => `
-                        <a href="${link.url}" target="_blank" class="song-link">
-                            <i class="material-icons">link</i> ${link.name}
+                        <a href="${link.url}" target="_blank">
+                            <i class="material-icons">${link.icon}</i> ${link.name}
                         </a>
                     `).join('')}
                 </div>
-                ` : ''}
             `;
 
-            showPage('song-detail');
+            document.getElementById('songsListPage').style.display = 'none';
+            document.getElementById('songDetailPage').style.display = 'block';
         }
 
-        function addLinkField(link = {name: '', url: ''}) {
-            const linkId = Date.now();
-            const linkField = document.createElement('div');
-            linkField.className = 'form-group link-field';
-            linkField.dataset.id = linkId;
-            
-            linkField.innerHTML = `
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <input type="text" class="form-control link-name" placeholder="Име (YouTube, Spotify и др.)" value="${link.name}">
-                    <input type="url" class="form-control link-url" placeholder="URL адрес" value="${link.url}">
-                    <button type="button" class="btn btn-danger btn-sm remove-link" style="padding: 0.5rem;">
-                        <i class="material-icons">close</i>
-                    </button>
-                </div>
-            `;
-            
-            linksContainer.appendChild(linkField);
+        // Функция за връщане към списъка с песни
+        function backToSongList() {
+            document.getElementById('songsListPage').style.display = 'block';
+            document.getElementById('songDetailPage').style.display = 'none';
         }
 
-        function resetSongForm() {
-            songForm.reset();
-            linksContainer.innerHTML = '';
-            editingSongId = null;
-            document.getElementById('form-title').textContent = 'Добави нова песен';
-            textPreview.style.display = 'none';
-        }
-
-        function loadSongForm(songId) {
-            const song = songs.find(s => s.id === songId);
-            if (!song) return;
-
-            editingSongId = songId;
-            document.getElementById('form-title').textContent = 'Редактирай песен';
-            document.getElementById('songId').value = song.id;
-            document.getElementById('songTitle').value = song.title;
-            document.getElementById('songDescription').value = song.description || '';
-            document.getElementById('songImage').value = song.image || '';
-            document.getElementById('songText').value = song.text || '';
-            updatePreview();
-
-            linksContainer.innerHTML = '';
-            if (song.links && song.links.length > 0) {
-                song.links.forEach(link => addLinkField(link));
-            } else {
-                addLinkField();
-            }
-        }
-
-        function showPage(pageId) {
-            pages.forEach(page => {
-                page.classList.remove('active');
-                if (page.id === `${pageId}-page`) {
-                    page.classList.add('active');
-                }
-            });
-        }
-
-        // Event listeners
-        formatVerseBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            wrapSelectedText('[verse]', '[/verse]\n\n');
-        });
-
-        formatChorusBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            wrapSelectedText('[chorus]', '[/chorus]\n\n');
-        });
-
-        formatTitleBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            wrapSelectedText('[title]', '[/title]\n\n');
-        });
-
-        loginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('login');
-        });
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const password = document.getElementById('loginPassword').value;
-            
-            if (password === '0102030405') {
-                currentUser = { name: 'Администратор', role: 'admin' };
-                localStorage.setItem('choirAdminLoggedIn', 'true');
-                localStorage.setItem('choirAdminUser', JSON.stringify(currentUser));
-                document.body.classList.add('logged-in');
-                renderAdminSongs();
-                showPage('admin');
-                loginForm.reset();
-            } else {
-                alert('Грешна парола! Моля, опитайте отново.');
-            }
-        });
-
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            currentUser = null;
-            localStorage.removeItem('choirAdminLoggedIn');
-            localStorage.removeItem('choirAdminUser');
-            document.body.classList.remove('logged-in');
-            showPage('home');
-        });
-
-        document.querySelectorAll('[data-page]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const page = link.getAttribute('data-page');
-                showPage(page);
+        // Добавяне на event listeners
+        document.querySelectorAll('.song-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const songId = this.getAttribute('data-song-id');
+                showSongDetail(songId);
             });
         });
 
-        cancelBtn.addEventListener('click', (e) => {
+        document.getElementById('backButton').addEventListener('click', function(e) {
             e.preventDefault();
-            resetSongForm();
-            showPage('admin');
+            backToSongList();
         });
 
-        addLinkBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            addLinkField();
-        });
-
-        linksContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-link') || e.target.closest('.remove-link')) {
-                e.preventDefault();
-                const linkField = e.target.closest('.link-field');
-                if (linkField) {
-                    const linkFields = document.querySelectorAll('.link-field');
-                    const nameInput = linkField.querySelector('.link-name');
-                    const urlInput = linkField.querySelector('.link-url');
-                    
-                    if (linkFields.length > 1 || (!nameInput.value && !urlInput.value)) {
-                        linkField.remove();
-                    }
-                }
-            }
-        });
-
-        songText.addEventListener('input', updatePreview);
-
-        exportBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            exportToHTML();
-        });
-
-        importBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            htmlImport.click();
-        });
-
-        htmlImport.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                importFromHTML(e.target.files[0]);
-            }
-        });
-
-        songForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const title = document.getElementById('songTitle').value.trim();
-            const description = document.getElementById('songDescription').value.trim();
-            const image = document.getElementById('songImage').value.trim();
-            const text = document.getElementById('songText').value.trim();
-            
-            const links = [];
-            document.querySelectorAll('.link-field').forEach(field => {
-                const name = field.querySelector('.link-name').value.trim();
-                const url = field.querySelector('.link-url').value.trim();
-                if (name && url) {
-                    links.push({ name, url });
-                }
-            });
-            
-            if (editingSongId) {
-                const songIndex = songs.findIndex(s => s.id === editingSongId);
-                if (songIndex !== -1) {
-                    songs[songIndex] = {
-                        ...songs[songIndex],
-                        title,
-                        description,
-                        image,
-                        text,
-                        links,
-                        updatedAt: new Date()
-                    };
-                }
-            } else {
-                const newSong = {
-                    id: Date.now(),
-                    title,
-                    description,
-                    image,
-                    text,
-                    links,
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                };
-                songs.push(newSong);
-            }
-            
-            saveSongs();
-            resetSongForm();
-            renderPublicSongs();
-            renderAdminSongs();
-            showPage('admin');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('edit-song') || e.target.closest('.edit-song')) {
-                e.preventDefault();
-                const songId = parseInt(e.target.dataset.id || e.target.closest('.edit-song').dataset.id);
-                loadSongForm(songId);
-                showPage('add-song');
-            }
-            
-            if (e.target.classList.contains('delete-song') || e.target.closest('.delete-song')) {
-                e.preventDefault();
-                const songId = parseInt(e.target.dataset.id || e.target.closest('.delete-song').dataset.id);
-                if (confirm('Сигурни ли сте, че искате да изтриете тази песен?')) {
-                    songs = songs.filter(s => s.id !== songId);
-                    saveSongs();
-                    renderPublicSongs();
-                    renderAdminSongs();
-                }
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', init);
+        // Показване на началната страница
+        backToSongList();
     </script>
 </body>
 </html>
